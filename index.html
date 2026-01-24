@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="旅遊小秘書">
-    <!-- 主畫面圖示 (已更改為通用旅遊圖示，您可自行替換 href 連結) -->
+    <!-- 主畫面圖示 -->
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/3125/3125848.png">
 
     <!-- Vue.js 3 -->
@@ -36,8 +36,8 @@
                         navFood: '#f97316',          
                         navHotel: '#6366f1',         
                         navMoney: '#0d9488',         
-                        themeTeal: '#0d9488',   
-                        themeCyan: '#0891b2',   
+                        themeTeal: '#0d9488',    
+                        themeCyan: '#0891b2',    
                         themeOrange: '#f97316', 
                         bgLight: '#f8fafc',     
                         textMain: '#334155',    
@@ -75,7 +75,8 @@
     <style>
         .safe-pb { padding-bottom: env(safe-area-inset-bottom); }
         .safe-pt { padding-top: env(safe-area-inset-top); }
-        body { background-color: #f8fafc; color: #334155; font-family: "Maru Gothic CJKtc Medium", "Zen Maru Gothic", "Noto Sans TC", sans-serif; font-weight: 500; }
+        /* 雙重保證高度填滿 */
+        body { background-color: #f8fafc; color: #334155; font-family: "Maru Gothic CJKtc Medium", "Zen Maru Gothic", "Noto Sans TC", sans-serif; font-weight: 500; overscroll-behavior-y: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
@@ -126,7 +127,7 @@
         }
     </style>
 </head>
-<body class="h-[100dvh] w-screen overflow-hidden flex flex-col bg-bgLight">
+<body class="h-screen h-[100dvh] w-screen overflow-hidden flex flex-col bg-bgLight">
 
 <div id="app" class="flex flex-col h-full max-w-md mx-auto bg-bgLight relative w-full border-x border-slate-100 shadow-2xl">
 
@@ -139,7 +140,7 @@
     </transition>
 
     <!-- Header -->
-    <header class="bg-themeHeader text-white shadow-md z-20 safe-pt sticky top-0">
+    <header class="bg-themeHeader text-white shadow-md z-20 safe-pt sticky top-0 shrink-0">
         <div class="px-6 py-4 flex justify-between items-end">
             <div>
                 <p class="text-xs text-white/80 font-bold tracking-widest uppercase mb-1">2026年9月</p>
@@ -442,7 +443,8 @@
         </div>
     </main>
 
-    <nav class="bg-white border-t border-slate-100 grid grid-cols-4 items-center pt-2 pb-safe z-30 safe-pb h-[80px]">
+    <!-- 改用 absolute positioning 確保導航列貼底 -->
+    <nav class="absolute bottom-0 w-full bg-white border-t border-slate-100 grid grid-cols-4 items-center pt-2 pb-safe z-30 safe-pb h-[80px]">
         <!-- 使用 nav* 顏色變數 -->
         <button @click="currentTab = 'schedule'" :class="['flex flex-col items-center gap-1 transition-colors', currentTab === 'schedule' ? 'text-navSchedule' : 'text-slate-300']"><i class="fa-solid fa-map text-lg transition-transform" :class="currentTab === 'schedule' ? 'scale-110' : ''"></i><span class="text-[10px] font-bold tracking-widest uppercase">行程</span></button>
         <button @click="currentTab = 'food'" :class="['flex flex-col items-center gap-1 transition-colors', currentTab === 'food' ? 'text-navFood' : 'text-slate-300']"><i class="fa-solid fa-utensils text-lg transition-transform" :class="currentTab === 'food' ? 'scale-110' : ''"></i><span class="text-[10px] font-bold tracking-widest uppercase">美食</span></button>
@@ -861,7 +863,7 @@
                     }));
                 } else {
                     // Default Initial Data if no local data
-                     days.value = [
+                      days.value = [
                         { date: '4/10', weekday: '一', weatherLocation: '', items: [{ id: 1, time: '10:00', location: '馬德里王宮', address: 'Calle de Bailén, s/n, 28071 Madrid', note: '記得帶護照', weather: null, completed: false }], hotels: [] },
                         { date: '4/11', weekday: '二', weatherLocation: '', items: [], hotels: [] },
                         { date: '4/12', weekday: '三', weatherLocation: '', items: [], hotels: [] },
@@ -891,7 +893,7 @@
                         }));
                     } catch(e) {} 
                 } else {
-                     flightInfos.value = [{ from: 'TPE', to: 'MAD', flight: '', date: '', depTime: '', arrTime: '', duration: '', gate: '', seat: '', note: '' }];
+                      flightInfos.value = [{ from: 'TPE', to: 'MAD', flight: '', date: '', depTime: '', arrTime: '', duration: '', gate: '', seat: '', note: '' }];
                 }
                 
                 if (!people.value.includes(expenseForm.value.payer)) expenseForm.value.payer = people.value[0] || '我';
